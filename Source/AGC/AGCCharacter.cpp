@@ -55,31 +55,6 @@ void AAGCCharacter::Tick(float DeltaTime)
 
     IKFootTrace(TraceDistance, LeftFootSocket, IKLeftFootLocation, IKLeftFootNormal);
     IKFootTrace(TraceDistance, RightFootSocket, IKRightFootLocation, IKRightFootNormal);
-#if 0
-    FTransform ActorTransform = GetActorTransform();
-    FTransform MeshRelativeTransform = GetMesh()->GetRelativeTransform();
-    FTransform MeshTransform = GetMesh()->GetComponentTransform();
-    IKLeftFootLocation  = ActorTransform.TransformVector(IKLeftFootLocation);
-    IKRightFootLocation = ActorTransform.TransformVector(IKRightFootLocation);
-    
-
-    FTransform InverseActorTransform = GetActorTransform().Inverse();
-    FVector LeftFootCurrentLocation = InverseActorTransform.TransformVector(GetMesh()->GetSocketLocation(LeftFootSocket));
-    FVector RightFootCurrentLocation = InverseActorTransform.TransformVector(GetMesh()->GetSocketLocation(RightFootSocket));
-
-    IKLeftFootLocation = FMath::Lerp(LeftFootCurrentLocation, IKLeftFootLocation, 1.0f - FMath::Exp(-10.0f * DeltaTime));
-    IKRightFootLocation = FMath::Lerp(RightFootCurrentLocation, IKRightFootLocation, 1.0f - FMath::Exp(-10.0f * DeltaTime));
-
-    IKLeftFootLocation = IKLeftFootLocation - LeftFootCurrentLocation;
-    IKRightFootLocation = IKRightFootLocation - RightFootCurrentLocation;
-#endif
-#if 0
-    FString Msg = FString::Printf(TEXT("Left: %.1f, %.1f, %.1f | Right: %.1f, %.1f, %.1f"), 
-        IKLeftFootLocation.X, IKLeftFootLocation.Y, IKLeftFootLocation.Z,
-        IKRightFootLocation.X, IKRightFootLocation.Y, IKRightFootLocation.Z);
-    GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::Yellow, Msg);
-#endif
-    //IKLeftFootLocation = FVector(0.0f, 0.0f, -50.0f);
 
     // Update torso rotation
     {
@@ -93,19 +68,7 @@ void AAGCCharacter::Tick(float DeltaTime)
         
         // NOTE(boti): swizzle is intentional, this seems to be the correct order for the control rig space
         HeadRotation = FRotator(0.0f, FMath::ClampAngle(Pitch, -60.0f, +60.0f), FMath::ClampAngle(Yaw, -85.0f, +85.0f));
-#if 1
         TorsoRotation = HeadRotation;
-#else
-        float TorsoYaw = FMath::Abs(Yaw) > 15.0f ? Yaw * 0.8f : 0.0f;
-        float TorsoPitch = FMath::Abs(Pitch) > 30.0f ? Pitch * 0.25f : 0.0f;
-        TorsoRotation = FRotator(0.0f, FMath::ClampAngle(TorsoPitch, -30.0f, +30.0f), FMath::ClampAngle(TorsoYaw, -75.0f, +75.0f));
-#endif
-#if 0
-        Msg = FString::Printf(TEXT("Mesh.Yaw = %.1f Mesh.Pitch = %.1f Mesh.Roll = %.1f | Control.Yaw = %.1f Control.Pitch = %.1f Control.Roll = %.1f"), 
-            MeshRelativeRotation.Yaw, MeshRelativeRotation.Pitch, MeshRelativeRotation.Roll,
-            ControlRotation.Yaw, ControlRotation.Pitch, ControlRotation.Roll);
-        GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::Yellow, Msg);
-#endif
     }
 }
 

@@ -37,44 +37,9 @@ void APhysChar::Tick(float DeltaTime)
 
     float Time = GetGameTimeSinceCreation();
 
-    // Movement animation
-    {
-#if 1
-        WalkTime = 2.0f * PI * GetGameTimeSinceCreation();
-        LeftFootP = FVector(0.0f, 20.0f, 20.0f * FMath::Abs(FMath::Sin(WalkTime)));
-        RightFootP = FVector(0.0f, -10.0f, 20.0f * FMath::Abs(FMath::Sin(WalkTime + 0.5f*PI)));
-#else
-        if (GetCharacterMovement()->IsWalking())
-        {
-            FVector Velocity = GetVelocity();
-            FVector VelocityXY = FVector(Velocity.X, Velocity.Y, 0.0f);
-            if (!VelocityXY.IsNearlyZero())
-            {                
-                LeftFootP = FVector(0.0f, 20.0f, FMath::Abs(FMath::Sin(WalkTime)));
-                RightFootP = FVector(0.0f, -10.0f, FMath::Abs(FMath::Sin(WalkTime + 0.5f*PI)));
-
-                WalkTime += DeltaTime;
-            }
-            else
-            {
-                LeftFootP = FVector(0.0f, 20.0f, 0.0f);
-                RightFootP = FVector(0.0f, -10.0f, 0.0f);
-
-                WalkTime = 0.0f;
-            }
-        }
-        else
-        {
-            LeftFootP = FVector(0.0f, 20.0f, 0.0f);
-            RightFootP = FVector(0.0f, -10.0f, 0.0f);
-
-            WalkTime = 0.0f;
-        }
-
-        //LeftFootP = FVector(0.0f, 0.0f, 0.0f);
-        //RightFootP = FVector(0.0f, 0.0f, 20.0f * FMath::Sin(GetGameTimeSinceCreation()));
-#endif
-    }
+    WalkTime = 2.0f * PI * GetGameTimeSinceCreation();
+    LeftFootP = FVector(0.0f, 20.0f, 20.0f * FMath::Abs(FMath::Sin(WalkTime)));
+    RightFootP = FVector(0.0f, -10.0f, 20.0f * FMath::Abs(FMath::Sin(WalkTime + 0.5f*PI)));
 
 }
 
