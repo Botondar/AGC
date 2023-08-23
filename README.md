@@ -1,5 +1,7 @@
 # AGC
 
+Demo video: https://www.youtube.com/watch?v=xLvQmOYSQvo
+
 AGC is a collection of example applications of Control Rigs in Unreal Engine 4.
 These include:
 - Custom animation ("hanging from ledge") created with the in-editor sequencer.
